@@ -1,23 +1,28 @@
 import logo from './logo.svg';
 import './App.css';
+import AddContact from './components/AddContact';
+import ViewContacts from "./components/ViewContacts"
+import Favorites from "./components/Favorites"
+import Profile from "./components/Profile"
+import Signin from "./components/Signin"
+import {  Routes, Route } from "react-router-dom";
+import Navbar from './components/Navbar';
+import HomePage from './components/Home';
+import Register from './components/Register';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App w-full p-5">
+    <Navbar />
+    <Routes>
+      <Route path="/" element={<HomePage />}/>
+      <Route path="/add-contact" element={<AddContact />}/>
+      <Route path="/view-contacts" element={<ViewContacts />}/>
+      <Route path="/favorites" element={<Favorites />}/>
+      <Route path="/profile" element={<Profile />}/>
+      <Route path="/signin" element={<Signin />}/>
+      <Route path="register" element={<Register />}/>
+    </Routes>
     </div>
   );
 }
