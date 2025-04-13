@@ -7,7 +7,7 @@ const Home = () => {
   const [favCount, setFavCount] = React.useState(0)
 
   useEffect(()=>{
-    axios.get("http://localhost:8080/api/contact/users/"+JSON.parse(localStorage.getItem("userDTO")).userId).then(res=>{
+    axios.get("http://localhost:8080/api/contact/users/"+JSON.parse(localStorage.getItem("userDTO"))?.userId).then(res=>{
       setContacts(res.data)
       const favorites = res.data.filter(contact=>contact.favorite == true)
       setFavCount(favorites.length)
