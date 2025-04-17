@@ -14,7 +14,15 @@ const Register = () => {
 
     const userDTO = {username, email, password}
     
-    axios.post("http://localhost:8080/api/register/user", userDTO).then(res=>{
+    // this is for localhost tomcar server 8080.
+    // axios.post("http://localhost:8080/api/register/user", userDTO).then(res=>{
+    //   if(res.data.username && res.data.email){
+    //     navigate("/signin")
+    //   }
+    // })
+
+    // this is for on render url
+    axios.post("https://scm-latest-ws4h.onrender.com/api/register/user", userDTO).then(res=>{
       if(res.data.username && res.data.email){
         navigate("/signin")
       }

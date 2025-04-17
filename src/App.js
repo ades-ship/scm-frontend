@@ -7,7 +7,7 @@ import Profile from "./components/Profile"
 import Signin from "./components/Signin"
 import {  Routes, Route } from "react-router-dom";
 import Navbar from './components/Navbar';
-import HomePage from './components/Home';
+import Home from './components/Home';
 import Register from './components/Register';
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
     <div className="App w-full p-5">
     <Navbar />
     <Routes>
-      <Route path="/" element={<HomePage />}/>
+      <Route path="/" element={<Home />}/>
       <Route path="/add-contact" element={<AddContact />}/>
       <Route path="/view-contacts" element={<ViewContacts />}/>
       <Route path="/favorites" element={<Favorites />}/>

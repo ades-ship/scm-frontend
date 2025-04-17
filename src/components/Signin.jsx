@@ -13,8 +13,15 @@ const Signin = () => {
 
     e.preventDefault();
 
+    // const userDTO = {username, password};
+    // axios.post("http://localhost:8080/api/authenticate/user", userDTO).then(res=>{
+    //   localStorage.setItem("userDTO", JSON.stringify(res.data))
+    //   navigate("/")
+    // })
+
+    /* this is for on render url */
     const userDTO = {username, password};
-    axios.post("http://localhost:8080/api/authenticate/user", userDTO).then(res=>{
+    axios.post("https://scm-latest-ws4h.onrender.com/api/authenticate/user", userDTO).then(res=>{
       localStorage.setItem("userDTO", JSON.stringify(res.data))
       navigate("/")
     })
