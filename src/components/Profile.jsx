@@ -1,13 +1,15 @@
 import { InboxIcon, PhoneCall, PhoneCallIcon } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { BASE_URL } from '../config/api'
 import axios from 'axios'
 const Profile = () => {
   const location = useLocation();
   const [profile,setProfile]=useState([]);
+  const userId=JSON.parse(localStorage.getItem("userDTO"))?.userId;
   console.log(profile)
   useEffect(()=>{
-     axios.get('http://localhost:8080/api/user/'+JSON.parse(localStorage.getItem("userDTO"))?.userId).then(res=>{
+     axios.get(`${BASE_URL}/user/${userId}`).then(res=>{
         console.log("user profile")
          console.log(res.data);
    setProfile(res.data);
