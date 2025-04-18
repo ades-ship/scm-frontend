@@ -21,7 +21,9 @@ const Profile = () => {
 
 
   return (
-    <div className='flex justify-center items-center mt-10'>
+    <>
+      {
+        userId? <div className='flex justify-center items-center mt-10'>
       <div className='bg-neutral-100 p-10'>
         <div className='flex flex-col items-center'>
 {
@@ -52,7 +54,12 @@ const Profile = () => {
           <Link to={`mailto:${profile.email}`} className='bg-black text-white px-5 py-2 flex gap-3 items-center'><InboxIcon/>Email</Link>
         </div>
       </div>
-    </div>
+    </div>: (
+          <div>First login to see profile</div>
+        )
+      }
+    </>
+    
   )
 }
 
