@@ -1,4 +1,4 @@
-import { InboxIcon, PhoneCall, PhoneCallIcon } from 'lucide-react'
+import { InboxIcon, PhoneCall, UserPen } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { BASE_URL } from '../config/api'
@@ -38,6 +38,7 @@ const Profile = () => {
           <h6 className='font-medium'>Contact Information</h6>
             <div className='flex items-center gap-3'><PhoneCall/>{profile?.phoneNumber}</div>
             <div className='flex items-center gap-3'><InboxIcon/>{profile?.email}</div>
+            <div className='flex items-center gap-3'><UserPen/>{profile?.about }</div>
         </div>
         {/* address info */}
         <div className='flex flex-col items-start my-5 gap-3'>
