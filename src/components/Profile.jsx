@@ -13,10 +13,11 @@ const Profile = () => {
         console.log("user profile")
          console.log(res.data);
    setProfile(res.data);
+   console.log("aboutttttttt-------",res.data.about)
         // console.log("state daata",profile)
      }).catch(err =>console.log(err))
       
-  },[])
+  },[userId])
 
 
   return (
@@ -38,7 +39,7 @@ const Profile = () => {
           <h6 className='font-medium'>Contact Information</h6>
             <div className='flex items-center gap-3'><PhoneCall/>{profile?.phoneNumber}</div>
             <div className='flex items-center gap-3'><InboxIcon/>{profile?.email}</div>
-            <div className='flex items-center gap-3'><UserPen/>{profile?.about }</div>
+            <div className='flex items-center gap-3'><UserPen/>{profile?.about}</div>
         </div>
         {/* address info */}
         <div className='flex flex-col items-start my-5 gap-3'>
