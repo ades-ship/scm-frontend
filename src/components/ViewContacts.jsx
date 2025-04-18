@@ -5,22 +5,29 @@ import { Link } from "react-router-dom";
 import ListView from "./ListView";
 import GridView from "./GridView";
 import * as XLSX from "xlsx";
+import { BASE_URL } from "../config/api";
 
 const ViewContacts = () => {
   const [query, setQuery] = React.useState("");
   const [gridView, setGridView] = React.useState(false);
   const [contacts, setContacts] = React.useState([]);
   const [filteredContacts, setFilteredContacts] = React.useState([]);
-
+const userId=JSON.parse(localStorage.getItem("userDTO")).userId;
   const getContacts = () => {
+    // axios
+    //   .get(
+    //     "http://localhost:8080/api/contact/users/" +
+    //       JSON.parse(localStorage.getItem("userDTO")).userId
+    //   )
+    //   .then((res) => setContacts(res.data))
+    //   .catch((err) => console.log(err));
+
+
+    // on render url
     axios
-      .get(
-        "http://localhost:8080/api/contact/users/" +
-          JSON.parse(localStorage.getItem("userDTO")).userId
-      )
+      .get(`${BASE_URL}/contact/users/${userId}`)
       .then((res) => setContacts(res.data))
       .catch((err) => console.log(err));
-
   };
 
   useEffect(() => {
