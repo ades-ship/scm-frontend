@@ -41,7 +41,7 @@ axios
 
 
       axios
-      .delete(`{${BASE_URL}/contact/delete}/`+contactId)
+      .delete(`{${BASE_URL}/contact/delete/`+contactId)
       .then((res) => getContacts())
       .catch((err) => console.log(err));
   };
