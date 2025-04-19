@@ -7,7 +7,7 @@ import GridView from "./GridView";
 import * as XLSX from "xlsx";
 import { BASE_URL } from "../config/api";
 
-const ViewContacts = () => {
+const ViewContacts = ({favourite, setFavourite}) => {
   const [query, setQuery] = React.useState("");
   const [gridView, setGridView] = React.useState(false);
   const [contacts, setContacts] = React.useState([]);
@@ -137,7 +137,9 @@ const userId=JSON.parse(localStorage.getItem("userDTO")).userId;
       {gridView ? (
         <GridView contacts={contacts} getContacts={getContacts} />
       ) : (
-        <ListView contacts={contacts} getContacts={getContacts} />
+        <ListView contacts={contacts} getContacts={getContacts} favourite={favourite}
+        setFavourite={setFavourite}
+         />
       )}
     </div>
   );

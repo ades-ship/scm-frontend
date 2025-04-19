@@ -1,6 +1,7 @@
 import React from 'react'
 
-const Favorites = () => {
+const Favorites = ({favourite}) => {
+  console.log("favourite is -------",favourite);
   return (
     <div>
       Favorites
