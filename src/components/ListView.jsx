@@ -34,16 +34,16 @@ axios
 
   };
   const handleDelete = (contactId) => {
-    // axios
-    //   .delete("http://localhost:8080/api/contact/delete/" + contactId)
-    //   .then((res) => getContacts())
-    //   .catch((err) => console.log(err));
-
-
-      axios
-      .delete(`{${BASE_URL}/contact/delete/`+contactId)
+    axios
+      .delete("http://localhost:8080/api/contact/delete/" + contactId)
       .then((res) => getContacts())
       .catch((err) => console.log(err));
+
+
+      // axios
+      // .delete(`{${BASE_URL}/contact/delete/`+contactId)
+      // .then((res) => getContacts())
+      // .catch((err) => console.log(err));
   };
    console.log("favourite are",favourite);
   return (
