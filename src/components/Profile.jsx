@@ -1,13 +1,22 @@
 import { InboxIcon, PhoneCall, UserPen } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { BASE_URL } from "../config/api";
+
 import axios from "axios";
+import { BASE_URL } from "../config/api";
 const Profile = () => {
   const location = useLocation();
   const [profile, setProfile] = useState([]);
   const userId = JSON.parse(localStorage.getItem("userDTO"))?.userId;
-
+  const [updateProfile, setUpdateProfile] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [username, setUserName] = React.useState(location?.state?.name || "");
+  const [email, setEmail] = React.useState(location?.state?.email || "");
+  const [phoneNumber, setPhoneNumber] = React.useState(
+    location.state?.phone || ""
+  );
+  const [about, setAbout] = useState(location?.state?.about || "");
+  const [address, setAddress] = React.useState(location?.state?.address || "");
   useEffect(() => {
     // axios
     //   .get("http://localhost:8080/api/user/" + userId)
@@ -33,9 +42,37 @@ const Profile = () => {
       .catch((err) => console.log(err));
   }, [userId]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setSuccess(false);
+    }, 1000);
+  }, [success]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const user = {
+      username,
+      email,
+      phoneNumber,
+      address,
+    };
+    axios.put(`${BASE_URL}/update/user/${userId}`, user).then((res) => {
+      console.log("update profile data", res.data);
+      setProfile(res.data);
+      setSuccess(true);
+      setUserName("");
+      setEmail("");
+      setAddress("");
+      setPhoneNumber("");
+      setAbout("");
+    });
+    // setUpdateProfile(false);
+    console.log("update profile successfully");
+  };
+
   return (
     <>
-      {userId ? (
+      {!updateProfile ? (
         <>
           {location?.state ? (
             <div className="flex justify-center items-center mt-10">
@@ -158,14 +195,107 @@ const Profile = () => {
                     <InboxIcon />
                     Email
                   </Link>
+                  <button
+                    onClick={() => setUpdateProfile(!updateProfile)}
+                    className="bg-black text-white px-5 py-2 flex gap-3 items-center"
+                  >
+                    Update profile
+                  </button>
                 </div>
               </div>
             </div>
           )}
         </>
       ) : (
-        <div className="flex justify-center items-start h-screen">
-          <h1 className="text-3xl">first login to access profile</h1>
+        <div className="flex justify-center items-center">
+          <div>
+            {location?.state?.id ? (
+              <div>
+                <h1 className="text-xl font-bold text-start">Update Profile</h1>
+              </div>
+            ) : (
+              <div>
+                <h1 className="text-xl font-bold text-start">Update Profile</h1>
+              </div>
+            )}
+            {success && (
+              <p className="bg-green-800 p-3 text-white">
+                Profile updated successfully!
+              </p>
+            )}
+
+            <form className="mt-10" onSubmit={handleSubmit}>
+              <div className="flex flex-col items-start mb-5">
+                <label htmlFor="">Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter name"
+                  name="username"
+                  value={username}
+                  onChange={(e) => setUserName(e.target.value)}
+                  className="px-3 py-2 outline-none border w-full"
+                />
+              </div>
+              <div className="flex flex-col items-start mb-5">
+                <label htmlFor="">Email</label>
+                <input
+                  type="text"
+                  placeholder="Enter email"
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="px-3 py-2 outline-none border w-full"
+                />
+              </div>
+              <div className="flex flex-col items-start mb-5">
+                <label htmlFor="">PhoneNumber</label>
+                <input
+                  type="text"
+                  placeholder="Enter phone number"
+                  name="phoneNumber"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  className="px-3 py-2 outline-none border w-full"
+                />
+              </div>
+              <div className="flex flex-col items-start mb-5">
+                <label htmlFor="">About</label>
+                <input
+                  type="text"
+                  placeholder="write something about yourself....."
+                  name="about"
+                  value={about}
+                  onChange={(e) => setAbout(e.target.value)}
+                  className="px-3 py-2 outline-none border w-full"
+                />
+              </div>
+
+              <div className="flex flex-col items-start mb-5">
+                <label htmlFor="">Address</label>
+                <input
+                  type="text"
+                  placeholder="Enter address"
+                  name="address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  className="px-3 py-2 outline-none border w-full"
+                />
+              </div>
+
+              {location?.state?.id ? (
+                <button className="bg-black text-white px-5 py-3">
+                  Update profile
+                </button>
+              ) : (
+                <button
+                  onClick={(e) => handleSubmit(e)}
+                  className="bg-black text-white px-5 py-3"
+                >
+                  Update Profile
+                </button>
+              )}
+            </form>
+          </div>
         </div>
       )}
     </>
