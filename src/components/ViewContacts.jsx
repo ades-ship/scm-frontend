@@ -38,7 +38,7 @@ const userId=JSON.parse(localStorage.getItem("userDTO")).userId;
     setQuery(value);
     axios
       .get(
-        `http://localhost:8080/api/contact/${
+        `${BASE_URL}/contact/${
           JSON.parse(localStorage.getItem("userDTO")).userId
         }?query=${value}`
       )
