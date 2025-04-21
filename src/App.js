@@ -10,7 +10,6 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Register from './components/Register';
 import { useState } from 'react';
-import UpdateProfile from './components/UpdateProfile';
 
 function App() {
   const [favourite,setFavourite]=useState([]);
