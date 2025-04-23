@@ -1,13 +1,13 @@
 import axios from 'axios'
 import { Contact2Icon, HeartIcon } from 'lucide-react';
 import React, { useEffect } from 'react'
-
+import { BASE_URL } from '../config/api';
 const Home = () => {
   const [contacts, setContacts] = React.useState([]);
   const [favCount, setFavCount] = React.useState(0)
 
   useEffect(()=>{
-    axios.get("http://localhost:8080/api/contact/users/"+JSON.parse(localStorage.getItem("userDTO"))?.userId).then(res=>{
+    axios.get(`${BASE_URL}/contact/users/`+JSON.parse(localStorage.getItem("userDTO"))?.userId).then(res=>{
       setContacts(res.data)
       const favorites = res.data.filter(contact=>contact.favorite == true)
       setFavCount(favorites.length)
