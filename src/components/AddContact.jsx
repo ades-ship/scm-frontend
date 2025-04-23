@@ -2,9 +2,10 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { BASE_URL } from "../config/api";
-
+import { useNavigate } from "react-router-dom";
 const AddContact = () => {
   const location = useLocation();
+  const navigate=useNavigate();
   const [user,setUser]=useState({});
   const [name, setName] = React.useState(location?.state?.name || "");
   const [email, setEmail] = React.useState(location?.state?.email || "");
@@ -61,13 +62,16 @@ const AddContact = () => {
     if (location?.state?.id) {
       // if there is data then update data
       console.log("update contact");
-      axios.put(`${BASE_URL}/contact/update/` + location.state.id,
+      axios.put(`${BASE_URL}/contact/update/` + location?.state?.id,
           contactDTO
         ).then((res) => {
           if (res.data.userId) setContactUpdated(true);
+
           else setContactUpdated(false);
+          navigate("/view-contacts");
         })
         .catch((err) => console.log(err));
+
     }
     
     else {

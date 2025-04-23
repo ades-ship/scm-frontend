@@ -1,10 +1,11 @@
 import { InboxIcon, PhoneCall, UserPen } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../config/api";
 const Profile = () => {
+  const navigate=useNavigate();
   const location = useLocation();
   const [profile, setProfile] = useState([]);
   const userId = JSON.parse(localStorage.getItem("userDTO"))?.userId;
@@ -35,6 +36,11 @@ const Profile = () => {
       .then((res) => {
         console.log("user profile");
         console.log(res.data);
+        setUserName(res.data.username);
+        setAbout(res.data.about);
+        setEmail(res.data.email);
+        setAddress(res.data.address);
+        setPhoneNumber(res.data.phoneNumber);
         setProfile(res.data);
         console.log("aboutttttttt-------", res.data.about);
         // console.log("state daata",profile)
@@ -55,6 +61,7 @@ const Profile = () => {
       email,
       phoneNumber,
       address,
+      about
     };
     axios.put(`${BASE_URL}/update/user/${userId}`, user).then((res) => {
       console.log("update profile data", res.data);
@@ -65,8 +72,9 @@ const Profile = () => {
       setAddress("");
       setPhoneNumber("");
       setAbout("");
+      
     });
-    // setUpdateProfile(false);
+    setUpdateProfile(false);
     console.log("update profile successfully");
   };
 
@@ -102,7 +110,7 @@ const Profile = () => {
                   <h6 className="font-medium">Contact Information</h6>
                   <div className="flex items-center gap-3">
                     <PhoneCall />
-                    {location?.state?.phone}
+                    {location?.state?.phoneNumber}
                   </div>
                   <div className="flex items-center gap-3">
                     <InboxIcon />
@@ -196,7 +204,10 @@ const Profile = () => {
                     Email
                   </Link>
                   <button
-                    onClick={() => setUpdateProfile(!updateProfile)}
+                    onClick={() => {
+                      setUpdateProfile(!updateProfile);
+                     
+                    }}
                     className="bg-black text-white px-5 py-2 flex gap-3 items-center"
                   >
                     Update profile

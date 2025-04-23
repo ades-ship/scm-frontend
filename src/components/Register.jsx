@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-
+import { BASE_URL } from '../config/api'
 const Register = () => {
   const [username, setUserName] = React.useState("")
   const [email, setEmail] = React.useState("")
@@ -13,16 +13,10 @@ const Register = () => {
     e.preventDefault()
 
     const userDTO = {username, email, password}
-    
-    // this is for localhost tomcar server 8080.
-    // axios.post("http://localhost:8080/api/register/user", userDTO).then(res=>{
-    //   if(res.data.username && res.data.email){
-    //     navigate("/signin")
-    //   }
-    // })
+   
 
     // this is for on render url
-    axios.post("https://scm-latest-ws4h.onrender.com/api/register/user", userDTO).then(res=>{
+    axios.post(`${BASE_URL}/register/user`, userDTO).then(res=>{
       if(res.data.username && res.data.email){
         navigate("/signin")
       }
