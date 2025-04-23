@@ -110,7 +110,7 @@ const Profile = () => {
                   <h6 className="font-medium">Contact Information</h6>
                   <div className="flex items-center gap-3">
                     <PhoneCall />
-                    {location?.state?.phoneNumber}
+                    {location?.state?.phone}
                   </div>
                   <div className="flex items-center gap-3">
                     <InboxIcon />
@@ -129,7 +129,7 @@ const Profile = () => {
                 {/* action buttons */}
                 <div className="flex justify-center items-start my-5 gap-3">
                   <Link
-                    to={`tel:+91${location?.state?.phoneNumber}`}
+                    to={`tel:+91${location?.state?.phone}`}
                     className="bg-black text-white px-5 py-2 flex gap-3 items-center"
                   >
                     <PhoneCall />

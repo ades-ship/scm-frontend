@@ -58,7 +58,7 @@ const AddContact = () => {
     // } 
     
 
-    // onrender url
+    // on render  api url
     if (location?.state?.id) {
       // if there is data then update data
       console.log("update contact");
@@ -82,7 +82,7 @@ const AddContact = () => {
       //     else setContactAdded(false)
       // }).catch(err=>console.log(err))
 
-      // render url
+      // on render api  url to register 
       axios
         .post(`${BASE_URL}/contact/register/${user.userId}`, contactDTO)
         .then((res) => {
@@ -97,6 +97,7 @@ const AddContact = () => {
               setCompany("");
           } 
           else setContactAdded(false);
+          navigate('/view-contacts');
         })
         .catch((err) => console.log(err));
     }

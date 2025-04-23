@@ -22,7 +22,6 @@ const userId=JSON.parse(localStorage.getItem("userDTO")).userId;
     //   .then((res) => setContacts(res.data))
     //   .catch((err) => console.log(err));
 
-
     // on render url
     axios
       .get(`${BASE_URL}/contact/users/${userId}`)
