@@ -18,6 +18,7 @@ const Profile = () => {
   );
   const [about, setAbout] = useState(location?.state?.about || "");
   const [address, setAddress] = React.useState(location?.state?.address || "");
+  const [deleteAccount,setDeleteAccount]=React.useState(false);
   useEffect(() => {
     // axios
     //   .get("http://localhost:8080/api/user/" + userId)
@@ -78,10 +79,30 @@ const Profile = () => {
     console.log("update profile successfully");
   };
 
+  const handleDeleteAccount=()=>{
+    axios.delete("http://localhost:8080/api/delete/user/"+userId)
+    .then((res)=>{
+      setDeleteAccount(true);
+      setAddress("");
+      
+      localStorage.removeItem("userDTO");
+      console.log("account has been deleted");
+    })
+    .catch(err=>{
+      console.log(err);
+    })
+    navigate("/signin");
+  }
   return (
     <>
       {!updateProfile ? (
         <>
+        {deleteAccount && (
+          <div className="flex justify-center w-screen">
+          <div className="flex items-center bg-green-500 px-5 py-2 
+        justify-center  w-[50vw]">Account has been successfully deleted.</div>
+        </div>
+        )}
           {location?.state ? (
             <div className="flex justify-center items-center mt-10">
               <div className="bg-neutral-100 p-10">
@@ -203,6 +224,7 @@ const Profile = () => {
                     <InboxIcon />
                     Email
                   </Link>
+                  
                   <button
                     onClick={() => {
                       setUpdateProfile(!updateProfile);
@@ -212,6 +234,16 @@ const Profile = () => {
                   >
                     Update profile
                   </button>
+                  {
+                    !deleteAccount && (
+                      <button onClick={handleDeleteAccount}
+                      className="text-white py-2 px-5 flex items-center bg-black gap-3"
+                      >
+                        Delete Account
+                      </button>
+                    )
+                  }
+          
                 </div>
               </div>
             </div>
@@ -315,116 +347,3 @@ const Profile = () => {
 
 export default Profile;
 
-// // chatgpt
-// import { InboxIcon, PhoneCall, UserPen } from "lucide-react";
-// import React, { useEffect, useState } from "react";
-// import { Link, useLocation } from "react-router-dom";
-// import { BASE_URL } from "../config/api";
-// import axios from "axios";
-
-// const Profile = () => {
-//   const location = useLocation();
-//   const [profile, setProfile] = useState({});
-//   const userId = JSON.parse(localStorage.getItem("userDTO"))?.userId;
-
-//   // 🧠 Determine if it's a contact being passed via state
-//   const isContact = location?.state?.email && location?.state?.phone;
-//   console.log("profile ",isContact);
-//   useEffect(() => {
-//     // If viewing contact, just use state
-//     if (isContact) {
-//       setProfile(location.state);
-//     } else if (userId) {
-//       // If it's user profile, fetch from API
-//       axios
-//         .get(`https://scm-latest-ws4h.onrender.com/api/user/${userId}`)
-//         .then((res) => {
-//           console.log("User profile fetched:", res.data);
-//           setProfile(res.data);
-//         })
-//         .catch((err) => console.log("Profile error:", err));
-//     }
-//   }, [userId, location.state, isContact]);
-
-//   return (
-//     <>
-//       {profile ? (
-//         <div className="flex justify-center items-center mt-10">
-//           <div className="bg-neutral-100 p-10 rounded-2xl shadow-lg max-w-xl w-full">
-//             <div className="flex flex-col items-center">
-//               <img
-//                 className="w-24 h-24 rounded-full object-cover"
-//                 src={
-//                   profile?.image ||
-//                   "https://images.pexels.com/photos/31321344/pexels-photo-31321344/free-photo-of-elegant-fashion-portrait-of-a-woman-in-studio.jpeg?auto=compress&cs=tinysrgb&w=1200"
-//                 }
-//                 alt="profile_img"
-//               />
-
-//               <h5 className="font-semibold mt-5">{profile?.username || profile?.name}</h5>
-//             </div>
-
-//             {/* Contact Info */}
-//             <div className="flex flex-col items-start my-5 gap-3">
-//               <h6 className="font-medium">Contact Information</h6>
-//               {profile?.phoneNumber || profile?.phone ? (
-//                 <div className="flex items-center gap-3">
-//                   <PhoneCall />
-//                   {profile.phoneNumber || profile.phone}
-//                 </div>
-//               ) : null}
-//               {profile?.email && (
-//                 <div className="flex items-center gap-3">
-//                   <InboxIcon />
-//                   {profile.email}
-//                 </div>
-//               )}
-//               {profile?.about && (
-//                 <div className="flex items-center gap-3">
-//                   <UserPen />
-//                   {profile.about}
-//                 </div>
-//               )}
-//             </div>
-
-//             {/* Address */}
-//             {profile?.address && (
-//               <div className="flex flex-col items-start my-5 gap-3">
-//                 <h6 className="font-medium">Address</h6>
-//                 <div>{profile.address}</div>
-//               </div>
-//             )}
-
-//             {/* Action Buttons */}
-//             <div className="flex justify-center items-start my-5 gap-3">
-//               {(profile.phoneNumber || profile.phone) && (
-//                 <Link
-//                   to={`tel:+91${profile.phoneNumber || profile.phone}`}
-//                   className="bg-black text-white px-5 py-2 flex gap-3 items-center rounded-lg"
-//                 >
-//                   <PhoneCall />
-//                   Call
-//                 </Link>
-//               )}
-//               {profile.email && (
-//                 <Link
-//                   to={`mailto:${profile.email}`}
-//                   className="bg-black text-white px-5 py-2 flex gap-3 items-center rounded-lg"
-//                 >
-//                   <InboxIcon />
-//                   Email
-//                 </Link>
-//               )}
-//             </div>
-//           </div>
-//         </div>
-//       ) : (
-//         <div className="flex justify-center items-center h-screen">
-//           <div>First login to access profile</div>
-//         </div>
-//       )}
-//     </>
-//   );
-// };
-
-// export default Profile;
