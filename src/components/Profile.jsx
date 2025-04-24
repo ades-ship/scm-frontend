@@ -80,6 +80,7 @@ const Profile = () => {
   };
 
   const handleDeleteAccount=()=>{
+    // axios.delete("http://localhost:8080/api/delete/user/"+userId)
     axios.delete(`${BASE_URL}/delete/user/`+userId)
     .then((res)=>{
       setDeleteAccount(true);
