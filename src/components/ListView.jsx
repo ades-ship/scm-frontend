@@ -4,35 +4,34 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../config/api";
 const ListView = ({ contacts, getContacts,favourite,setFavourite }) => {
-  const handleFavorite = (contactDTO) => {
-  const obj={
-    name:contactDTO.name,
-    email:contactDTO.email,
-    phone:contactDTO.phone,
-  }
-
-    // axios
-    //   .put("http://localhost:8080/api/contact/update/" + contactDTO.id, {
-    //     favorite: !contactDTO.favorite,
-    //   })
-    //   .then((res) => {
-    //         // setFavourite(obj);
-    //     getContacts();
-    //   })
-    //   .catch((err) => console.log(err));
-
-// on render
-axios
-      .put(`${BASE_URL}/contact/update/${contactDTO.id}`, {
-        favorite: !contactDTO.favorite,
-      })
-      .then((res) => {
-            // setFavourite(obj);
-        getContacts();
-      })
-      .catch((err) => console.log(err));
-
+  
+const handleFavorite = (contactDTO) => {
+  const updatedContact = {
+    ...contactDTO,
+    favorite: !contactDTO.favorite
   };
+
+  axios
+    .put(`${BASE_URL}/contact/update/${contactDTO.id}`, {
+      favorite: updatedContact.favorite,
+    })
+    .then((res) => {
+      // update favourite list on frontend
+      if (updatedContact.favorite) {
+        // add to favourites
+        setFavourite([...favourite, updatedContact]);
+      } else {
+        // remove from favourites
+        setFavourite(favourite.filter(c => c.id !== updatedContact.id));
+      }
+
+      getContacts();
+    })
+    .catch((err) => console.log(err));
+};
+
+
+
   const handleDelete = (contactId) => {
     // axios
     //   .delete("http://localhost:8080/api/contact/delete/" + contactId)
