@@ -7,17 +7,17 @@ import { BASE_URL } from '../config/api';
 const GridView = ({ contacts, getContacts }) => {
 
 
-    const handleFavorite = (contactDTO) => {
+    const handleFavorite = async (contactDTO) => {
         // axios.put("http://localhost:8080/api/contact/update/" + contactDTO.id, { favorite: !contactDTO.favorite }).then(res => getContacts()).catch(err => console.log(err))
 
         // on render api call
-        axios.put(`${BASE_URL}/contact/update/` + contactDTO.id, { favorite: !contactDTO.favorite }).then(res => getContacts()).catch(err => console.log(err))
+       await axios.put(`${BASE_URL}/contact/update/` + contactDTO.id, { favorite: !contactDTO.favorite }).then(res => getContacts()).catch(err => console.log(err))
     }
-    const handleDelete = (contactId) => {
+    const handleDelete = async (contactId) => {
         // axios.delete("http://localhost:8080/api/contact/delete/" + contactId).then(res => getContacts()).catch(err => console.log(err))
 
         // ON render api call;
-        axios.delete(`${BASE_URL}/contact/delete/`+ contactId).then(res => getContacts()).catch(err => console.log(err))
+      await  axios.delete(`${BASE_URL}/contact/delete/`+ contactId).then(res => getContacts()).catch(err => console.log(err))
     }
 
 

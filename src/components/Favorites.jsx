@@ -1,32 +1,99 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import {
-  
+  DeleteIcon,
+  Edit2Icon,
+  Expand,
   Grid2X2Icon,
-
+  HeartIcon,
+  InboxIcon,
+  PhoneCallIcon,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import ListView from "./ListView";
-import GridView from "./GridView";
 import * as XLSX from "xlsx";
 import { BASE_URL } from "../config/api";
 
 const Favorites = ({ favourite, setFavourite }) => {
   const [query, setQuery] = React.useState("");
   const [gridView, setGridView] = React.useState(false);
-  const [contacts, setContacts] = React.useState(favourite);
+  const [contacts, setContacts] = React.useState([]);
   const [filteredContacts, setFilteredContacts] = React.useState(favourite);
   const userId = JSON.parse(localStorage.getItem("userDTO")).userId;
   console.log(favourite, "22");
 
-  // localStorage.setItem('favourite',favourite);
-  useEffect(()=>{
-      localStorage.setItem('favouriteContacts',JSON.stringify(favourite));
-  },[favourite])
+  const handleFavorite = async (contactDTO) => {
+    const updatedContact = {
+      ...contactDTO,
+      favorite: !contactDTO.favorite,
+    };
 
-  const handleChange = (value) => {
-    setQuery(value);
+    await axios
+      .put(`${BASE_URL}/contact/update/${contactDTO.id}`, {
+        favorite: updatedContact.favorite,
+      })
+      .then((res) => {
+        // update favourite list on frontend
+        if (updatedContact.favorite) {
+          // add to favourites
+          setFavourite([...favourite, updatedContact]);
+        } else {
+          // remove from favourites
+          setFavourite(favourite.filter((c) => c.id !== updatedContact.id));
+        }
+
+        getContacts();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleDelete = async (contactId) => {
+    // axios
+    //   .delete("http://localhost:8080/api/contact/delete/" + contactId)
+    //   .then((res) => getContacts())
+    //   .catch((err) => console.log(err));
+
+    // on render delete contact api.
+
+    await axios
+      .delete(`${BASE_URL}/contact/delete/` + contactId)
+      .then((res) => getContacts())
+      .catch((err) => console.log(err));
+  };
+
+  const getContacts = () => {
+    // axios
+    //   .get(
+    //     "http://localhost:8080/api/contact/users/" +
+    //       JSON.parse(localStorage.getItem("userDTO")).userId
+    //   )
+    //   .then((res) => setContacts(res.data))
+    //   .catch((err) => console.log(err));
+
+    // on render url
     axios
+      .get(`${BASE_URL}/contact/users/${userId}`)
+      .then((res) => setContacts(res.data))
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getContacts();
+  }, []);
+
+  console.log("all contacts in fav are", contacts);
+
+
+  const handleChange = async (value) => {
+    setQuery(value);
+    // await axios
+    //   .get(
+    //     `http://localhost:8080/api/contact/${
+    //       JSON.parse(localStorage.getItem("userDTO")).userId
+    //     }?query=${value}`
+    //   )
+    //   .then((res) => setFilteredContacts(res.data));
+
+    await axios
       .get(
         `${BASE_URL}/contact/${
           JSON.parse(localStorage.getItem("userDTO")).userId
@@ -34,8 +101,6 @@ const Favorites = ({ favourite, setFavourite }) => {
       )
       .then((res) => setFilteredContacts(res.data));
   };
-
-
 
   const removeUnwantedFields = (data) => {
     return data.map(({ id, userId, ...rest }) => rest); // Removes both 'id' and 'userId'
@@ -126,18 +191,123 @@ const Favorites = ({ favourite, setFavourite }) => {
           </button>
         </div>
       </div>
-      {/* see all the favourite contact */}
-     
-
-      { gridView ? (<GridView contacts={contacts} setContacts={setContacts}/>):
-
-      (<ListView contacts={contacts} setContacts={setContacts} favourite={favourite} setFavourite={setFavourite} />)
-      }
+      {/* see all the favourite contact in list view */}
+      {contacts && 
+        contacts.map(
+          (contact) =>
+            contact.favorite && (
+              <div
+                key={contact.id}
+                className="flex justify-between items-center hover:bg-neutral-100 p-2 transition-all duration-500"
+              >
+                <img
+                  className="w-12 h-12 rounded-full object-cover "
+                  src="https://images.pexels.com/photos/31321344/pexels-photo-31321344/free-photo-of-elegant-fashion-portrait-of-a-woman-in-studio.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                  alt=""
+                />
+                <span>{contact.name}</span>
+                <span>{contact.email}</span>
+                <span>{contact.phone}</span>
+                <div className="flex items-center gap-3">
+                  {contact.favorite ? (
+                    <button
+                      onClick={() => handleFavorite(contact)}
+                      className="text-pink-600"
+                    >
+                      <HeartIcon />
+                    </button>
+                  ) : (
+                    <button onClick={() => handleFavorite(contact)}>
+                      <HeartIcon />
+                    </button>
+                  )}
+                  <Link to="/add-contact" state={contact}>
+                    <Edit2Icon />
+                  </Link>
+                  <Link to="/profile" state={contact}>
+                    <Expand />
+                  </Link>
+                  <button onClick={() => handleDelete(contact.id)}>
+                    <DeleteIcon />
+                  </button>
+                </div>
+              </div>
+            )
+        )}
       
-     
+
+{/* grid view */}
+      {gridView ? (
+        contacts &&
+        contacts.map(
+          (contact) =>
+            contact.favorite && (
+              <div
+                key={contact.id}
+                className="p-5 flex flex-col gap-7 bg-neutral-100"
+              >
+                <div className="flex justify-center items-center">
+                  {contact.image ? (
+                    <img
+                      className="w-24 h-24 rounded-full object-cover "
+                      src={contact.image}
+                      alt="profile_img"
+                    />
+                  ) : (
+                    <img
+                      className="w-24 h-24 rounded-full object-cover "
+                      src="https://images.pexels.com/photos/31321344/pexels-photo-31321344/free-photo-of-elegant-fashion-portrait-of-a-woman-in-studio.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                      alt="profile_img"
+                    />
+                  )}
+                </div>
+                <div className="flex justify-center  flex-col gap-3">
+                  <div className="font-medium text-lg">{contact.name}</div>
+                  <div className="flex items-center gap-3 text-start">
+                    <InboxIcon/>
+                    {contact.email}
+                  </div>
+                  <div className="flex items-center gap-3 text-start">
+                    <PhoneCallIcon/>
+                    {contact.phone}
+                  </div>
+                </div>
+                {/* action buttons */}
+                <div className="flex justify-center items-center gap-3">
+                  {contact.favorite ? (
+                    <button
+                      onClick={() => handleFavorite(contact)}
+                      className="text-pink-600"
+                    >
+                      <HeartIcon/>
+                    </button>
+                  ) : (
+                    <button onClick={() => handleFavorite(contact)}>
+                      <HeartIcon />
+                    </button>
+                  )}
+                  <Link to="/add-contact" state={contact}>
+                    <Edit2Icon />
+                  </Link>
+                  <Link to="/profile" state={contact}>
+                    <Expand />
+                  </Link>
+                  <button onClick={() => handleDelete(contact.id)}>
+                    <DeleteIcon />
+                  </button>
+                </div>
+              </div>
+            )
+        )
+      ): null
         
+      
+      }
     </div>
   );
 };
 
 export default Favorites;
+
+
+

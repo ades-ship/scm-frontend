@@ -5,13 +5,13 @@ import axios from "axios";
 import { BASE_URL } from "../config/api";
 const ListView = ({ contacts, getContacts,favourite,setFavourite }) => {
   
-const handleFavorite = (contactDTO) => {
+const handleFavorite = async(contactDTO) => {
   const updatedContact = {
     ...contactDTO,
     favorite: !contactDTO.favorite
   };
 
-  axios
+ await axios
     .put(`${BASE_URL}/contact/update/${contactDTO.id}`, {
       favorite: updatedContact.favorite,
     })
@@ -32,16 +32,19 @@ const handleFavorite = (contactDTO) => {
 
 
 
-  const handleDelete = (contactId) => {
+  const handleDelete = async (contactId) => {
     // axios
     //   .delete("http://localhost:8080/api/contact/delete/" + contactId)
     //   .then((res) => getContacts())
     //   .catch((err) => console.log(err));
 
 // on render delete contact api.
-      axios
+
+    await axios
       .delete(`${BASE_URL}/contact/delete/`+contactId)
-      .then((res) => getContacts())
+      .then((res) => getContacts()
+     
+    )
       .catch((err) => console.log(err));
   };
    console.log("favourite are",favourite);

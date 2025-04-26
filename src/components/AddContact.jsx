@@ -32,7 +32,7 @@ const AddContact = () => {
     }, 10000);
   }, [contactAdded, contactUpdated]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const contactDTO = {
@@ -62,7 +62,7 @@ const AddContact = () => {
     if (location?.state?.id) {
       // if there is data then update data
       console.log("update contact");
-      axios.put(`${BASE_URL}/contact/update/` + location?.state?.id,
+     await axios.put(`${BASE_URL}/contact/update/` + location?.state?.id,
           contactDTO
         ).then((res) => {
           if (res.data.userId) setContactUpdated(true);
@@ -83,7 +83,7 @@ const AddContact = () => {
       // }).catch(err=>console.log(err))
 
       // on render api  url to register 
-      axios
+     await axios
         .post(`${BASE_URL}/contact/register/${user.userId}`, contactDTO)
         .then((res) => {
         

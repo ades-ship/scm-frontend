@@ -9,14 +9,15 @@ import {  Routes, Route } from "react-router-dom";
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Register from './components/Register';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 function App() {
-  const [favourite,setFavourite]=useState(()=>{
-  const stored=localStorage.getItem('favouriteContacts');
-  return stored? JSON.parse(stored):[];
-  });
-  console.log("Fav contacts are",favourite);
+  // const [favourite,setFavourite]=useState(()=>{
+  // const stored=localStorage.getItem('favouriteContacts');
+  // return stored? JSON.parse(stored):[];
+  // });
+  const [favourite,setFavourite]=React.useState([]);
+  console.log("Fav contacts are app",favourite);
   return (
     <div className="App w-full p-5">
     <Navbar />
