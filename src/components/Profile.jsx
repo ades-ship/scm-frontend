@@ -210,20 +210,6 @@ const Profile = () => {
                 </div>
                 {/* action buttons */}
                 <div className="flex justify-center items-start my-5 gap-3">
-                  <Link
-                    to={`tel:+91${profile.phoneNumber}`}
-                    className="bg-black text-white px-5 py-2 flex gap-3 items-center"
-                  >
-                    <PhoneCall />
-                    Call
-                  </Link>
-                  <Link
-                    to={`mailto:${profile.email}`}
-                    className="bg-black text-white px-5 py-2 flex gap-3 items-center"
-                  >
-                    <InboxIcon />
-                    Email
-                  </Link>
                   
                   <button
                     onClick={() => {
