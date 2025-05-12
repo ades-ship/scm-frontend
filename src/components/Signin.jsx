@@ -35,7 +35,11 @@ const Signin = () => {
     // const userDTO = {username, password};
     // axios.post("http://localhost:8080/api/authenticate/user", userDTO).then(res=>{
     //   localStorage.setItem("userDTO", JSON.stringify(res.data))
+    //   console.log("authenticated user",res.data);
     //   navigate("/")
+    // }).catch(err=>{
+    //   console.log("logined failed",err);
+    //   setServerError("Invalid username or password")
     // })
     
     /* this is for on render url */

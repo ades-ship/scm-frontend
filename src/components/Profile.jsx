@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { BASE_URL } from "../config/api";
+import { BASE_URL,Local_URL } from "../config/api";
 const Profile = () => {
   const navigate=useNavigate();
   const location = useLocation();

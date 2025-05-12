@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { BASE_URL } from '../config/api'
+import { BASE_URL,Local_URL } from '../config/api'
 const Register = () => {
   const [username, setUserName] = React.useState("")
   const [email, setEmail] = React.useState("")
